@@ -1,0 +1,29 @@
+{
+  
+  "scenes": [
+
+    [
+    {"src":"file:///android_asset/brushing.png","answer":1},
+    {"src":"file:///android_asset/wakeup.png","answer":0},
+    {"src":"file:///android_asset/goschool.png","answer":4},
+    {"src":"file:///android_asset/school.png","answer":5},
+    {"src":"file:///android_asset/bath.png","answer":2},
+    {"src":"file:///android_asset/eating.png","answer":3}
+    ]
+  ,
+  
+  
+    [
+    {"src":"file:///android_asset/b5.png","answer":4},
+    {"src":"file:///android_asset/b6.png","answer":5},
+    {"src":"file:///android_asset/b4.png","answer":3},
+    {"src":"file:///android_asset/b3.png","answer":2},
+    {"src":"file:///android_asset/b1.png","answer":0},
+    {"src":"file:///android_asset/b2.png","answer":1}
+    ]
+
+
+  
+]
+  
+}
