@@ -21,8 +21,8 @@ import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements View.OnDragListener {
     private List<Item> items;
-    private ImageView dropTarget, dropped,dropped_temp;
-    private Drawable target_draw,dragged_draw;
+    private ImageView dropTarget, dropped, dropped_temp;
+    private Drawable target_draw, dragged_draw;
     private Integer tagDropTarget, tagDroppedImage;
     private View draggedImageView;
     private JsonHandler jsonHandler;
@@ -32,9 +32,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
     private MediaPlayer rightVoice, wrongVoice, mp;
     private ArrayList<Integer> sounds;
 
-    private int i=0,nowclicked=-1;
-
-
+    private int i = 0, nowclicked = -1;
 
 
     public ItemAdapter(List<Item> items, Context context) {
@@ -61,13 +59,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
         sounds.add(R.raw.correct6);
 
 
-
-
         return new ItemViewHolder(statusContainer);
 
 
     }
-
 
 
     private void nextScene(int value) {
@@ -80,7 +75,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
             ItemAdapter.this.dropTarget.setBackgroundColor(Color.WHITE);
 
 
-
             SceneTracker.setCount(0);
 
         }
@@ -88,19 +82,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
     }
 
 
-
-
-    private void countMatch(boolean match) {
-        if (match) {
-            SceneTracker.setCount(SceneTracker.getCount() + 1);
-        }
-
-
-
-
-        nextScene(SceneTracker.getCount());
-
-    }
 
 
     @Override
@@ -111,21 +92,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
         holder.imageButton.setVisibility(View.VISIBLE);
         holder.imageButton.setBackgroundColor(0x00000000);
 
-            /*holder.imageButton.setOnLongClickListener(new View.OnLongClickListener() {
-
-                @Override
-                public boolean onLongClick(View view) {
-
-                    ClipData clipData = ClipData.newPlainText("", "");
-                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                    view.startDrag(clipData, shadowBuilder, view, 0);
-
-                    nowclicked = holder.getAdapterPosition();
-                    return true;
-
-                }
-            });*/
-
+        if (position != SceneTracker.getNotDrag()) {
             holder.imageButton.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -137,27 +104,25 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
                     return true;
                 }
             });
+        }
 
 
-
-      //  if(position!=(Integer) holder.imageButton.getTag())
-
-    holder.imageButton.setOnDragListener(this);
+        holder.imageButton.setOnDragListener(this);
 
 
-      //  Log.d("tagAdapter",String .valueOf(nowclicked));
+        //  Log.d("tagAdapter",String .valueOf(nowclicked));
     }
 
 
     @Override
     public boolean onDrag(View receivingLayoutView, DragEvent dragEvent) {
         draggedImageView = (View) dragEvent.getLocalState();
+
         // ImageView draggedImageView = (ImageView) dragEvent.getLocalState();
 
         switch (dragEvent.getAction()) {
 
             case DragEvent.ACTION_DRAG_STARTED:
-
 
                 return true;
 
@@ -176,22 +141,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
             case DragEvent.ACTION_DROP:
 
 
-                // Log.d("tagf",dropTarget.toString());
+                dropped_temp = (ImageView) draggedImageView;
 
-                dropped_temp = (ImageView)draggedImageView;
-
-                tagDropTarget = (Integer)receivingLayoutView.getTag();
+                tagDropTarget = (Integer) receivingLayoutView.getTag();
                 tagDroppedImage = (Integer) draggedImageView.getTag();
-
 
                 dropTarget = (ImageView) receivingLayoutView;
                 target_draw = dropTarget.getDrawable();// stores target image
                 dropped = (ImageView) draggedImageView;
 
 
-
-                Log.d("tagAdapter",String .valueOf(nowclicked));
-               // dragged_draw = dropped.getDrawable();
+                Log.d("tagAdapter", String.valueOf(nowclicked));
+                // dragged_draw = dropped.getDrawable();
 
                 isDragMatching();
 
@@ -203,8 +164,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
                 if (!dragEvent.getResult()) {
 
                     draggedImageView.setVisibility(View.VISIBLE);
-                }
 
+                }
                 return true;
 
             default:
@@ -217,7 +178,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
 
     private boolean isDragMatching() {
 
-        if (nowclicked==tagDropTarget){
+        if ((nowclicked == tagDropTarget)&&(tagDropTarget!=tagDroppedImage)) {
 
 
             dropTarget.setImageDrawable(dropped.getDrawable());
@@ -225,36 +186,30 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
 
             dropped.setBackgroundColor(Color.GREEN);
             dropTarget.setBackgroundColor(Color.GREEN);
-            matchFlag=true;
+            dropped.setTag(9);
+            dropTarget.setTag(9);
+
+            SceneTracker.setCount(SceneTracker.getCount() + 1);
+            nextScene(SceneTracker.getCount());
 
 
-
-
-
-          //    notifyItemChanged(nowclicked);
             //Log.d("tagid", Integer.toString(dropped.getId()));
 
-        }
-        else if(nowclicked==tagDroppedImage) {
+        } else if (nowclicked == tagDroppedImage) {
 
             dropped.setBackgroundColor(Color.GREEN);
-            matchFlag=false;
+            matchFlag = false;
 
-        }
+        } else {
 
-
-        else {
-
-           matchFlag=false;
+            matchFlag = false;
            /*dropTarget.setImageDrawable(dropped.getDrawable());
             dropped.setImageDrawable(target_draw);*/
         }
 
-        countMatch(matchFlag);
+
         return true;
     }
-
-
 
 
     public void prevScene() {

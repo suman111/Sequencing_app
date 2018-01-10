@@ -6,7 +6,7 @@ package com.example.root.sequencingapp;
 
 public class SceneTracker {
     private static int level=0;
-    private static int totalLevel=0,count=0,picassoCount=0;
+    private static int totalLevel=0,count=0,picassoCount=0,notDrag=7;
     public SceneTracker( ){
 
     }
@@ -47,6 +47,14 @@ public class SceneTracker {
 
     public static int getTotalLevel(){
         return totalLevel;
+    }
+
+    public static void setNotDrag(int value) {
+        notDrag = value;
+    }
+
+    public static int getNotDrag(){
+        return notDrag;
     }
 
 
